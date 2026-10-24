@@ -15,8 +15,17 @@ cards will be.
 3. Safely remove the SD card from your computer
 4. Plug it into your hexpansion
 5. Power up the badge
-6. The hexpansion app for your SD card reader should pop up with three menu items "Mount", "Remove" and "Format".  Select the "Mount" option then exit the app (button F on the badge front-panel).
+6. The hexpansion app for your SD card reader should pop up with menu items "Mount", "Remove" and "Format" (plus the options described below).  Select the "Mount" option then exit the app (button F on the badge front-panel).
 7. Now look at the bottom of the list of apps on the launcher, the apps on your SD card should be there and ready to go!
+
+### Auto mount and quiet start
+
+Below "Mount", "Remove" and "Format" the menu has two toggles. Select one to switch it between On and Off. The choices are saved in the badge settings (`sdhexp_automount` and `sdhexp_quiet`), so they survive a reboot.
+
+- **Auto mount**: when On, the card is mounted as soon as the hexpansion app starts, so the apps on it show up in the launcher without you having to select "Mount". If the mount fails, the app comes to the foreground and shows the error.
+- **Quiet start**: when On, the app no longer pops up when the hexpansion is detected. It runs in the background and is listed in the launcher as "SD Card" (with the hexpansion symbol and slot number in front), so you can still open it to change settings, remove or format the card.
+
+Turning on both gives a hands-off setup: plug in the hexpansion and the card's apps appear in the launcher without any menus.
 
 ### Why "sdcard_apps"?
 There's a [bug in micropython](https://github.com/emfcamp/badge-2024-software/issues/334) which means that `import` doesn't work properly if it includes the mount point of a FAT filesystem.  To work around this the driver EEPROM adds the mount-point (`sdcard` which is the name of the folder on the badge where all the files on your card will appear) to the system path.  That means that when `import` is run it searches in the SD card for micropython code.  If the folder where all the apps were installed on the SD card was just called `apps` it would have the same name as the default location on the badge itself and the software wouldn't know which of the two `apps` folders to look in.  The paths discussed here aren't magic, they are all defined in the EEPROM app which is run when the hexpansion is plugged in.
